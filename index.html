@@ -9,14 +9,17 @@
  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
   :root{
+    /* Новая цветовая схема: Графит + Оранжевый + Белый */
     --bg: #121212;
     --surface: #1c1c1e;
     --surface-hover: #2c2c2e;
-    --accent: #ff4b14; 
+    --accent: #ff4b14; /* Оранжевый со скрина, чуть более насыщенный */
     --accent-glow: rgba(255, 75, 20, 0.3);
     --text: #ffffff;
     --muted: #8e8e93;
     --border: #333336;
+    
+    /* Шрифт: Barlow (аналог DIN), затем DIN PT, затем системный */
     --font-main: 'Barlow', 'DIN PT', 'DIN Alternate', -apple-system, sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -28,12 +31,16 @@
     display:flex;align-items:center;justify-content:center;padding:24px;
   }
   .app{width:100%;max-width:960px}
+
+  /* ЭКРАН ВЫБОРА */
   #selectView h1{font-size:clamp(24px,5vw,36px);text-align:center;font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
   #selectView h1 span{color: var(--accent); text-shadow: 0 0 20px var(--accent-glow);}
   .sub{text-align:center;color:var(--muted);margin:10px auto 32px;font-size:16px;max-width:460px;font-weight:400}
+  
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   @media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:420px){.grid{grid-template-columns:1fr}}
+
   .hero-tile{
     background:var(--surface);
     border:1.5px solid var(--border);border-radius:16px;
@@ -45,11 +52,17 @@
     background: var(--surface-hover);
     box-shadow:0 10px 30px -10px var(--accent-glow);
   }
-  .hero-tile .emoji{font-size:44px;display:block;margin-bottom:12px;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5));}
+  .hero-tile .emoji{
+    font-size:44px;display:block;margin-bottom:12px;
+    filter:drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  }
   .hero-tile h3{font-size:16px;font-weight:600;margin-bottom:6px;letter-spacing:.5px}
   .hero-tile p{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:500}
+
+  /* ЭКРАН РЕЗУЛЬТАТА (КАРТОЧКА) */
   .result{display:none;flex-direction:column;align-items:center;gap:24px}
   .result.show{display:flex}
+
   .hero-card{
     width:360px;max-width:100%;
     background: linear-gradient(180deg, var(--surface) 0%, #0a0a0c 100%);
@@ -59,12 +72,15 @@
     position:relative;overflow:hidden;
   }
   .result.show .hero-card{animation:cardIn .6s cubic-bezier(.2,1.2,.4,1)}
+  
+  /* Оранжевое свечение сверху */
   .hero-card::before{
     content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);
     width:260px;height:260px;border-radius:50%;
     background:radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
     pointer-events:none;
   }
+  
   .rank-badge{
     position:absolute;top:20px;right:20px;z-index:2;
     background:var(--bg);
@@ -75,6 +91,7 @@
     display:flex;flex-direction:column;align-items:center;gap:4px;
   }
   .rank-badge small{font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+
   .portrait{
     width:120px;height:120px;margin:10px auto 20px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;font-size:64px;
@@ -84,21 +101,47 @@
     position:relative;z-index:1;
   }
   .hero-name{text-align:center;font-size:24px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;position:relative;z-index:1}
-  .hero-role{text-align:center;color:var(--accent);font-size:13px;margin-top:6px;margin-bottom:24px;text-transform:uppercase;letter-spacing:2px;font-weight:600;position:relative;z-index:1;}
+  .hero-role{
+    text-align:center;color:var(--accent);font-size:13px;margin-top:6px;margin-bottom:24px;
+    text-transform:uppercase;letter-spacing:2px;font-weight:600;position:relative;z-index:1;
+  }
+  
+  /* Характеристики */
   .stats{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;position:relative;z-index:1}
   .stat{display:grid;grid-template-columns:70px 1fr 24px;align-items:center;gap:12px;font-size:12px;font-weight:500}
   .stat-label{color:var(--muted);text-transform:uppercase;letter-spacing:1px}
   .stat-val{text-align:right;font-weight:800;color:var(--text)}
   .bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden}
-  .bar-fill{height:100%;border-radius:3px;background:var(--accent);box-shadow:0 0 10px var(--accent-glow);animation:grow .8s cubic-bezier(.2,1,.4,1) backwards;}
-  .hero-desc{font-size:14px;color:var(--muted);line-height:1.6;text-align:center;padding:18px 6px 0;border-top:1px solid var(--border);position:relative;z-index:1;}
-  .card-footer{text-align:center;color:var(--accent);font-size:10px;margin-top:16px;letter-spacing:2px;text-transform:uppercase;font-weight:600;position:relative;z-index:1;}
+  .bar-fill{
+    height:100%;border-radius:3px;
+    background:var(--accent);
+    box-shadow:0 0 10px var(--accent-glow);
+    animation:grow .8s cubic-bezier(.2,1,.4,1) backwards;
+  }
+  
+  .hero-desc{
+    font-size:14px;color:var(--muted);line-height:1.6;text-align:center;
+    padding:18px 6px 0;border-top:1px solid var(--border);position:relative;z-index:1;
+  }
+  
+  .card-footer{
+    text-align:center;color:var(--accent);font-size:10px;margin-top:16px;
+    letter-spacing:2px;text-transform:uppercase;font-weight:600;position:relative;z-index:1;
+  }
+
+  /* Кнопки */
   .actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
   .btn{padding:14px 28px;border-radius:12px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;text-transform:uppercase;letter-spacing:1px}
   .btn-ghost{background:var(--surface);color:var(--text);border:1.5px solid var(--border)}
   .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,75,20,0.05)}
-  .screenshot-tip{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);padding:12px 20px;border-radius:12px;font-size:13px;color:var(--muted);max-width:360px;font-weight:500;}
+
+  .screenshot-tip{
+    display:flex;align-items:center;gap:12px;
+    background:var(--surface);border:1px solid var(--border);
+    padding:12px 20px;border-radius:12px;font-size:13px;color:var(--muted);max-width:360px;font-weight:500;
+  }
   .screenshot-tip .icon{font-size:20px;color:var(--accent)}
+
   @keyframes cardIn{from{opacity:0;transform:translateY(30px) scale(.95)}to{opacity:1;transform:none}}
   @keyframes grow{from{width:0}}
 </style>
@@ -193,6 +236,7 @@ function selectHero(hero) {
 
   const card = document.getElementById('heroCard');
   
+  // Если ранг SS - делаем бейдж золотым, если S - оранжевым, если A - зеленым
   let rankColor = 'var(--muted)';
   if(hero.rank === 'SS') rankColor = '#ffd700';
   if(hero.rank === 'S') rankColor = 'var(--accent)';
